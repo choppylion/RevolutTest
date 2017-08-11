@@ -1,0 +1,6 @@
+.cache/
+.idea/
+__pycache__/
+*.py[cod]
+*report
+*.apk
