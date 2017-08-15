@@ -11,4 +11,4 @@ class Home(BaseScreen):
     }
 
     def transfer(self, destination):
-        button = self.driver
+        button = self.get_element()

@@ -9,13 +9,16 @@ class BaseScreen:
     def __init__(self, driver):
         self.driver = driver
 
-    def get_element(self, locator):
+    def get_element(self, locator, multiple=None):
         """
         Returns element based on provided locator.
         Locator include the method and locator value in a tuple.
         :param locator:
+        :param multiple:
         :return:
         """
+        if multiple is None:
+            multiple = False
 
         method = locator[0]
         values = locator[1]
@@ -29,24 +32,6 @@ class BaseScreen:
                 except NoSuchElementException:
                     pass
             raise NoSuchElementException
-
-    def get_element_by_type(self, method, value):
-        if method == 'accessibility_id':
-            return self.driver.find_element_by_accessibility_id(value)
-        elif method == 'android':
-            return self.driver.find_element_by_android_uiautomator('new UiSelector().%s' % value)
-        elif method == 'ios':
-            return self.driver.find_element_by_ios_uiautomation(value)
-        elif method == 'class_name':
-            return self.driver.find_element_by_class_name(value)
-        elif method == 'id':
-            return self.driver.find_element_by_id(value)
-        elif method == 'xpath':
-            return self.driver.find_element_by_xpath(value)
-        elif method == 'name':
-            return self.driver.find_element_by_name(value)
-        else:
-            raise Exception('Invalid locator method.')
 
     def get_elements(self, locator):
         """
@@ -68,6 +53,24 @@ class BaseScreen:
                 except NoSuchElementException:
                     pass
             raise NoSuchElementException
+
+    def get_element_by_type(self, value, method=None):
+        if method == 'accessibility_id':
+            return self.driver.find_element_by_accessibility_id(value)
+        elif method == 'android':
+            return self.driver.find_element_by_android_uiautomator('new UiSelector().%s' % value)
+        elif method == 'ios':
+            return self.driver.find_element_by_ios_uiautomation(value)
+        elif method == 'class_name':
+            return self.driver.find_element_by_class_name(value)
+        elif method == 'id':
+            return self.driver.find_element_by_id(value)
+        elif method == 'xpath':
+            return self.driver.find_element_by_xpath(value)
+        elif method == 'name':
+            return self.driver.find_element_by_name(value)
+        else:
+            raise Exception('Invalid locator method.')
 
     def get_elements_by_type(self, method, value):
         if method == 'accessibility_id':
