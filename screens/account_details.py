@@ -1,0 +1,2 @@
+class AccountDetails:
+    pass

@@ -7,9 +7,8 @@ from appium import webdriver
 import pytest
 
 
-PATH = lambda p: os.path.abspath(
-    os.path.join(os.path.dirname(__file__), p)
-)
+def PATH(p):
+    return os.path.abspath(os.path.join(os.path.dirname(__file__), p))
 
 
 class TestConfig:
