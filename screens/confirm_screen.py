@@ -1,7 +1,7 @@
 from screens.base import ScreenWithNext
 
 
-class LastScreen(ScreenWithNext):
+class ConfirmScreen(ScreenWithNext):
 
     message_locator = "Beneficiary Errrroijjjjnbbb Gvvvvh was successfully created"
     next_locator = "com.revolut.revolut.test:id/operation_status_button"
@@ -11,5 +11,4 @@ class LastScreen(ScreenWithNext):
         text = self.get_element(self.message_locator).text()
         text.replace("Beneficiary ", "")
         text.replace(" was successfully created", "")
-        first_name, last_name = text.split()
-        return first_name, last_name
+        return text
