@@ -143,3 +143,23 @@ class BaseScreen:
     def send_keys(self, locator, text):
         element = self.wait_visible(locator)
         element.send_keys(text)
+
+
+class ScreenWithPrev(BaseScreen):
+
+    back_locator = "com.revolut.revolut.test:id/back_button"
+
+    def back(self):
+        self.click(self.back_locator)
+
+
+class ScreenWithNext(BaseScreen):
+
+    next_locator = "com.revolut.revolut.test:id/button_next"
+
+    def next(self):
+        self.click(self.next_locator)
+
+
+class ScreenWithPrevNext(ScreenWithPrev, ScreenWithNext):
+    pass

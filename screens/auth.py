@@ -1,9 +1,8 @@
-from screens.base import BaseScreen
+from screens.base import ScreenWithPrevNext
 
 
-class Authorization(BaseScreen):
+class Authorization(ScreenWithPrevNext):
 
-    back_locator = "com.revolut.revolut.test:id/back_button"
     common_digit_locator = "com.revolut.revolut.test:id/digit{}"
     forgot_locator = "com.revolut.revolut.test:id/button_forgot_text"
     delete_locator = "com.revolut.revolut.test:id/icon_delete"
@@ -22,5 +21,3 @@ class Authorization(BaseScreen):
     def forgot(self):
         self.click(self.forgot_locator)
 
-    def back(self):
-        self.click(self.back_locator)

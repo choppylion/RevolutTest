@@ -1,7 +1,7 @@
-from screens.base import BaseScreen
+from screens.base import BaseScreen, ScreenWithPrevNext
 
 
-class CountryCurrency(BaseScreen):
+class CountryCurrency(ScreenWithPrevNext):
 
     edit_country_locator = "com.revolut.revolut.test:id/edit_country"
     edit_currency_locator = "com.revolut.revolut.test:id/edit_currency"
@@ -13,6 +13,14 @@ class CountryCurrency(BaseScreen):
     def select_currency(self, currency):
         self.click(self.edit_currency_locator)
         SelectCurrency(self.driver).select(currency)
+
+    @property
+    def selected_country(self):
+        return self.get_element(self.edit_country_locator).text()
+
+    @property
+    def selected_currency(self):
+        return self.get_element(self.edit_currency_locator).text()
 
 
 class SelectObject(BaseScreen):

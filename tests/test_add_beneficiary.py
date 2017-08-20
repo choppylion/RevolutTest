@@ -6,60 +6,70 @@ from screens.bank_transfer import BankTransfer
 from screens.transfer_type import TransferType
 from screens.country_currency import CountryCurrency
 from screens.account_details import AccountDetails
-from screens.last_screen import LastScreen
+from screens.account_address import AccountAddress
+from screens.confirm_screen import ConfirmScreen
 
 
 @pytest.mark.usefixtures("driver", "config")
 # @pytest.mark.parametrize()
 class TestAddBenefeciary:
 
-    def test_auth(self):
+    def test_main_scenarion(self):
+        # authorization
         auth = Authorization(self.driver)
         auth.proceed(self.config["password"])
-        assert True
 
-    def test_select_transfer(self):
+        # transfer
         home = Home(self.driver)
         home.transfer("bank_account")
-        assert True
 
-    def test_select_new(self):
+        # new beneficiary
         bank_transfer = BankTransfer(self.driver)
         bank_transfer.add_new()
-        assert True
 
-    def test_select_transfer_type(self):
+        # tranfer type
         transfer_type = TransferType(self.driver)
         transfer_type.select(self.config["transfer_type"])
-        transfer_type.accept()
-        assert True
+        transfer_type.next()
 
-    def test_select_country_currency(self):
+        # country and currency
         country_currency = CountryCurrency(self.driver)
-        country_currency.select(self.config["country"])
-        country_currency.select(self.config["currency"])
-        country_currency.accept()
-        assert True
-        assert True
+        country_currency.select_country(self.config["country"])
+        country_currency.select_currency(self.config["currency"])
 
-    def test_enter_account_details(self):
+        assert country_currency.selected_country is self.config["country"]
+        assert country_currency.selected_currency is self.config["currency"]
+
+        country_currency.next()
+
+        # account details
         account_details = AccountDetails(self.driver)
-        account_details.select(self.config[""])
-        account_details.select(self.config[""])
-        account_details.select(self.config[""])
-        account_details.select(self.config[""])
-        account_details.select(self.config[""])
-        account_details.accept()
-        assert True
+        account_details.enter_first_name(self.config["first_name"])
+        account_details.enter_last_name(self.config["last_name"])
+        account_details.enter_iban(self.config["iban"])
+        account_details.enter_swift(self.config["swift"])
+        if self.config["phone"]:
+            account_details.enter_phone(self.config["phone"])
+        if self.config["email"]:
+            account_details.enter_email(self.config["email"])
 
-    def test_confirm(self):
-        last_screen = LastScreen(self.driver)
-        last_screen.select(self.config[""])
-        last_screen.accept()
-        assert True
-        assert True
-        assert True
-        assert True
-        assert True
-        assert True
-        assert True
+        account_details.next()
+
+        #  account address
+        account_address = AccountAddress(self.driver)
+        account_address.enter_zip(self.config["zip"])
+        account_address.enter_line1(self.config["line1"])
+        account_address.enter_line2(self.config["line2"])
+        account_address.enter_city(self.config["city"])
+        account_address.enter_region(self.config["region"])
+
+        # confirmation
+        confirm_screen = ConfirmScreen(self.driver)
+
+        assert confirm_screen.selected_name == (self.config["first_name"], self.config["last_name"])
+
+        confirm_screen.next()
+
+        # checking is beneficiary added
+        assert bank_transfer.is_beneficiary_present(self.config["first_name"], self.config["last_name"],
+                                                    self.config["currency"], self.config["iban"])
